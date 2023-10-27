@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ralph & Teddy - The Library</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
     <header>
@@ -27,7 +28,7 @@
     <main>
         {% for book in books %}
         <div class="card">
-            <img src="{{ book.book_cover.url}}" alt="Livro">
+            <a href="book_detail.html"><img src="{{ book.book_cover.url}}" alt="Livro"></a>
             <div class="card-content">
                 <h2>{{ book.name }}</h2>
                 <p>Autor: {{ book.author }}</p>
@@ -38,7 +39,9 @@
     </main>
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">
+        <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>
         <p>Created by Anderson Dutra</p>
+        <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
         <img src="../../../media/teddy-rosto.png" alt="Teddy">
     </footer>
 
