@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar">
             <div class="logo-navbar">
-                <img src="../../../media/Ralph Delivery (1).png" alt="">
+                <img src="../../../media/Ralph Delivery (2).png" alt="">
             </div>
             <div class="title-navbar">
                 <h1>Ralph & Teddy - The Library</h1>
@@ -25,34 +25,16 @@
         </nav>
     </header>
     <main>
-        <section class="tabela-livros">
-            <h2>Livros Cadastrados</h2>
-            <table class="tabela-livros-detalhes">
-                <thead>
-                    <tr>
-                        <th class="tabela-th">Código</th>
-                        <th class="tabela-th">Nome</th>
-                        <th class="tabela-th">Autor</th>
-                        <th class="tabela-th">Gênero</th>
-                        <th class="tabela-th">Páginas</th>
-                        <th class="tabela-th">Estoque</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for livro in livros %}
-                    <tr>
-                        <td class="tabela-td">{{livro.cod}}</td>
-                        <td class="tabela-td"><a href="{% url 'book-detail' livro.id %}">{{livro.name}}</a></td>
-                        <td class="tabela-td">{{livro.author}}</td>
-                        <td class="tabela-td">{{livro.gender}}</td>
-                        <td class="tabela-td">{{livro.pages}}</td>
-                        <td class="tabela-td">{{livro.in_stock}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>    
-            </table>
-            <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livro</a>
-        </section>
+        {% for book in books %}
+        <div class="card">
+            <img src="{{ book.book_cover.url}}" alt="Livro">
+            <div class="card-content">
+                <h2>{{ book.name }}</h2>
+                <p>Autor: {{ book.author }}</p>
+                <p>Gênero: {{ book.gender }}</p>
+            </div>
+        </div>
+        {% endfor %}
     </main>
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">
@@ -61,7 +43,7 @@
     </footer>
 
     <script>
-        console.log(`{{ livros }}`);
+        console.log(`{{ books }}`);
     </script>
 
 </body>
