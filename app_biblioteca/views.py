@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Books, Genders
 from random import randint
-from datetime import datetime
-from django.urls import reverse
 
 
 def index(request):
