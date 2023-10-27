@@ -1,0 +1,37 @@
+/* Este css, recebe o mesmo index.css, contudo, se torna necessário estilizar os itens abaixo */
+
+main{
+    justify-content: center;
+}
+
+.card-content{
+    border-right: none;
+}
+
+.card-button{
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow:inset 0px 1px 0px 0px #fce2c1;
+    background-color: #94c6f8;
+    border-radius: 10px;
+    margin: 20% 30% 0 30%;
+    font-family:Arial;
+    font-size:16px;
+	font-weight:bold;
+	padding:10px 20px;
+}
+
+.card-button > a{
+    color: rgb(8, 30, 53);
+    text-decoration: none;
+}
+
+.card-button:hover{
+	background:linear-gradient(to bottom, #94c6f8 5%, #037ffc 100%);
+	cursor: pointer;
+}
+
+.card-button > a:hover{
+    color: aliceblue;
+}

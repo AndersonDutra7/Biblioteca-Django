@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Books, Genders
 from random import randint
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
 
 
 def index(request):
@@ -16,6 +18,22 @@ def index(request):
     pages = models.IntegerField()
     qtd = models.IntegerField()
     in_stock = models.BooleanField(default=False)
+
+
+@login_required
+def login(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return render(request, "pages/login.html")
+        else:
+            return render(request, "pages/user.html")
+    else:
+        print("Usuário não cadastrado")
+
+
+def register_user(request):
+    return render(request, "pages/register_user.html")
+
 
 def add_books(request):
     if request.method == "POST":

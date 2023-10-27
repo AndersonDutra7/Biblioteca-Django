@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ralph & Teddy - The Library</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
@@ -19,24 +20,27 @@
             <div class="title-navbar">
                 <h1>Ralph & Teddy - The Library</h1>
             </div>
-            <div class="search-navbar">
-                <input type="text" placeholder="Pesquise um Livro">
-                <a href="{% url 'login' %}">Login</a>
+            <div class="logo-navbar">
+                <img src="../../../media/Ralph Delivery (2).png" alt="">
             </div>
         </nav>
     </header>
     <main>
-        {% for book in books %}
-        <div class="card">
-            <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_cover.url}}" alt="{{ book.name }}"></a>
-            <div class="card-content">
-                <h2>{{ book.name }}</h2>
-                <p>Autor: {{ book.author }}</p>
-                <p>Gênero: {{ book.gender }}</p>
+        <div class="login-container">
+            <div class="logo-market-place">
             </div>
+            <h3>Crie sua conta! É Grátis!</h3>
+            <form class="login-form">
+                <input type="text" placeholder="Nome" class="login-input">
+                <input type="email" placeholder="Email" class="login-input">
+                <h3>Cadastre sua senha.</h3>
+                <p>Use letras, números e caracteres especiais.</p>
+                <input type="password" placeholder="Senha" class="login-input">
+                <input type="password" placeholder="Confirmar Senha" class="login-input">
+                <button type="submit" class="btn-login">Acessar</button>
+            </form>
+            <p class="login-registro">Já possui conta? <a href="login.html">Entrar</a></p>
         </div>
-        {% endfor %}
-    </main>
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">
         <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>

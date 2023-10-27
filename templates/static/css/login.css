@@ -1,0 +1,70 @@
+main{
+    justify-content: center;
+}
+
+.login-container {
+    width: 300px;
+    margin: 10%;
+    padding: 3%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+    background-color: white;
+}
+
+.login-logo {
+    margin-top: -20px;
+    background-image: url("../../../media/Ralph Delivery (1).png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 300px;
+    height: 150px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 3px solid #94c6f8;
+}
+
+.login-input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-login {
+    margin-bottom: 10px;
+    padding: 10px 50px;
+    color: salmon;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #94c6f8;
+    color: aliceblue;
+}
+
+.login-registro {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.login-registro a {
+    text-decoration: none;
+    color: rgb(8, 30, 53);
+}
+
+.login-registro a:hover {
+    text-decoration: underline;
+    color: #f8039a;
+}

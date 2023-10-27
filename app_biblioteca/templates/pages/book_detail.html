@@ -1,1 +1,57 @@
-book_detail
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ralph & Teddy - The Library</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo-navbar">
+                <img src="../../../media/Ralph Delivery (2).png" alt="">
+            </div>
+            <div class="title-navbar">
+                <h1>Ralph & Teddy - The Library</h1>
+            </div>
+            <div class="logo-navbar">
+                <img src="../../../media/Ralph Delivery (2).png" alt="">
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="card">
+            <img src="{{ book.book_cover.url}}" alt="Livro">
+            <div class="card-content">
+                <h2>{{ book.name }}</h2>
+                <p>Código: {{ book.cod }}</p>
+                <p>Autor: {{ book.author }}</p>
+                <p>Gênero: {{ book.gender }}</p>
+                <p>Páginas: {{ book.pages }}</p>
+                <p>Disponível: {{ book.in_stock }}</p>
+                <div class="card-button">
+                    <a href="{% url 'login' %}">Emprestar</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <img src="../../../media/ralph-rosto.png" alt="Ralph">
+        <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>
+        <p>Created by Anderson Dutra</p>
+        <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <img src="../../../media/teddy-rosto.png" alt="Teddy">
+    </footer>
+
+    <script>
+        console.log(`{{ books }}`);
+    </script>
+
+</body>
+</html>
