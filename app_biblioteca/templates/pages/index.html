@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Django</title>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>BIBLIOTECA DJANGO</h1>
+        </nav>
+    </header>
+    <main>
+        <section class="tabela-livros">
+            <h2>Livros Cadastrados</h2>
+            <table class="tabela-livros-detalhes">
+                <thead>
+                    <tr>
+                        <th class="tabela-th">Código</th>
+                        <th class="tabela-th">Nome</th>
+                        <th class="tabela-th">Autor</th>
+                        <th class="tabela-th">Gênero</th>
+                        <th class="tabela-th">Páginas</th>
+                        <th class="tabela-th">Estoque</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for livro in livros %}
+                    <tr>
+                        <td class="tabela-td">{{livro.cod}}</td>
+                        <td class="tabela-td"><a href="{% url 'book-detail' livro.id %}">{{livro.name}}</a></td>
+                        <td class="tabela-td">{{livro.author}}</td>
+                        <td class="tabela-td">{{livro.gender}}</td>
+                        <td class="tabela-td">{{livro.pages}}</td>
+                        <td class="tabela-td">{{livro.in_stock}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>    
+            </table>
+            <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livro</a>
+        </section>
+    </main>
+    <footer class="footer">
+        <img src="../../../media/ralph-rosto.png" alt="Ralph">
+        <p>Created by Anderson Dutra</p>
+        <img src="../../../media/teddy-rosto.png" alt="Teddy">
+    </footer>
+
+    <script>
+        console.log(`{{ livros }}`);
+    </script>
+
+</body>
+</html>
