@@ -27,6 +27,11 @@
     </header>
     <main>
         <div class="login-container">
+            {% if messages %}
+                {% for message in messages %}
+                <h3>{{message}}</h3>
+                {% endfor %}
+            {% endif %}
             <div class="login-logo">
             </div>
             <form class="login-form">
@@ -34,7 +39,7 @@
                 <input type="password" placeholder="Senha" class="login-input">
                 <button type="submit" class="btn-login">Acessar</button>
             </form>
-            <p class="login-registro">Não tem uma conta? <a href="{% url 'register-user' %}">Cadastre-se</a></p>
+            <p class="login-registro">Não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
         </div>
     </main>
     <footer class="footer">
