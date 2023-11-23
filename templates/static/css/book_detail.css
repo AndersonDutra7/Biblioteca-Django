@@ -2,36 +2,68 @@
 
 main{
     justify-content: center;
+    flex-direction: column;
 }
 
 .card-content{
     border-right: none;
+    margin: auto;
 }
 
-.card-button{
+.card-content a{
+    flex: 1;
     display: flex;
     justify-content: center;
-    font-size: 24px;
     box-shadow:inset 0px 1px 0px 0px #fce2c1;
-    background-color: #94c6f8;
     border-radius: 10px;
     margin: 20% 30% 0 30%;
     font-family:Arial;
     font-size:16px;
 	font-weight:bold;
 	padding:10px 20px;
-}
-
-.card-button > a{
     color: rgb(8, 30, 53);
     text-decoration: none;
-}
-
-.card-button:hover{
-	background:linear-gradient(to bottom, #94c6f8 5%, #037ffc 100%);
+    background:linear-gradient(to bottom, #94c6f8 5%, #037ffc 100%);
 	cursor: pointer;
 }
 
-.card-button > a:hover{
+.card-content a:hover{
+    color: aliceblue;
+}
+
+.card > img{
+    height: 300px;
+    width: 200px;
+    box-shadow: 0 9px 9px rgba(0, 0, 0, 0.9);
+    margin-left: 1%;
+    cursor: auto;
+}
+
+.card-button{
+    display: flex;
+    padding: 30px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-button a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0px 1px 0px 0px #fce2c1;
+    border-radius: 10px;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: rgb(8, 30, 53);
+    text-decoration: none;
+    background: linear-gradient(to bottom, #94c6f8 5%, #037ffc 100%);
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.card-button a:hover {
     color: aliceblue;
 }

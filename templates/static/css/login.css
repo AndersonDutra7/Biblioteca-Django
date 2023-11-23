@@ -1,11 +1,12 @@
 main{
     justify-content: center;
+    overflow: hidden;
 }
 
 .login-container {
     width: 300px;
-    margin: 10%;
-    padding: 3%;
+    padding: 2%;
+    margin-top: -20px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -13,6 +14,7 @@ main{
     justify-content: space-around;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
     background-color: white;
+    overflow: hidden;
 }
 
 .login-logo {
@@ -25,10 +27,36 @@ main{
     height: 150px;
 }
 
+.logo-register{
+    width: 200px;
+    height: 75px;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;
     border-bottom: 3px solid #94c6f8;
+}
+
+.login-form h3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-message{
+    color: red;
+}
+
+.success-message{
+    color: blue;
+}
+
+.login-form p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
 }
 
 .login-input {
@@ -60,6 +88,16 @@ main{
 }
 
 .login-registro a {
+    text-decoration: none;
+    color: rgb(8, 30, 53);
+}
+
+.login-registro a:hover {
+    text-decoration: underline;
+    color: #f8039a;
+}
+
+.login-registro p {
     text-decoration: none;
     color: rgb(8, 30, 53);
 }

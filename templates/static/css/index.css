@@ -50,6 +50,12 @@ body {
 	cursor: pointer;
 }
 
+.avatar{
+    padding: 1%;
+    background-color: #94c6f8;
+    border-radius: 50%;
+}
+
 main{
     height: 80vh;
     display: flex;
@@ -84,7 +90,7 @@ main{
     margin-right: 2%;
 }
 
-.card-content > h2{
+.card-content > h2, .no-results-message{
     font-size: 20px;
     margin: 4%;
     border-bottom: 5px solid #396a9c;
@@ -124,5 +130,16 @@ main{
     font-size: 24px;
     cursor: pointer;
     color: black;
+}
 
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
 }

@@ -12,23 +12,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo-navbar">
-                <img src="../../../media/Ralph Delivery (2).png" alt="">
-            </div>
-            <div class="title-navbar">
-                <h1>Ralph & Teddy - The Library</h1>
-            </div>
-            <div class="logo-navbar">
-                <img src="../../../media/Ralph Delivery (2).png" alt="">
-            </div>
-        </nav>
-    </header>
+    <nav class="navbar">
+        <div class="logo-navbar">
+            <a href="{% url 'home' %}">
+                <img src="../../../media/Ralph Delivery (2).png" alt="Home">
+            </a>
+        </div>
+        <div class="title-navbar">
+            <h1>Ralph & Teddy - The Library</h1>
+        </div>
+        <div class="search-navbar">
+            <form method="get" action="{% url 'search-book' %}">
+                <input type="text" name="q" placeholder="Pesquise um Livro">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Sair</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </form>
+                           
+        </div>
+        <div class="avatar">
+            {% if user.is_authenticated %}
+              {% if user.is_superuser %}
+                <h2>Adm</h2>
+              {% else %}
+                <h2>User</h2>
+              {% endif %}
+            {% endif %}
+          </div>              
+    </nav>
+</header>
     <main>
         <div class="card">
-            {% if book.picture %}
-                <img src="{{ book.book_cover.url}}" alt="Livro">
+            {% if book.book_cover %}
+                <img src="{{ book.book_cover.url}}" alt="{{ book.name }}">
             {% else %}
                 <p>Nenhuma imagem disponível</p>
             {% endif %}
@@ -38,16 +56,35 @@
                 <p>Autor: {{ book.author }}</p>
                 <p>Gênero: {{ book.gender }}</p>
                 <p>Páginas: {{ book.pages }}</p>
-                <p>Disponível: {{ book.in_stock }}</p>
-                <div class="card-button">
-                    <a href="{% url 'login' %}">Emprestar</a>
-                </div>
+                <p>Disponível: {% if book.in_stock %}Sim{% else %}Emprestado{% endif %}</p>
+            </div> 
+        </div>
+        <div class="card">
+            <div class="card-button">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a href="{% url 'delete-book' book.id %}" type="submit">Excluir</a>
+                        <a href="{% url 'sell-book' book.id %}" type="submit">Editar</a>
+                        <a href="{% url 'sell-book' book.id %}" type="submit">Emprestar</a>
+                        <a href="{% url 'sell-book' book.id %}" type="submit">Devolver</a>
+                        <a href="{% url 'sell-book' book.id %}" type="submit">Voltar</a>
+                    {% endif %}
+                        <a href="{% url 'book-detail' book.id %}" type="submit">Reservar</a>
+                        <a href="{% url 'home' %}" type="submit">Voltar</a>
+                {% endif %}
             </div>
         </div>
-        <div>
-            <a href="{% url 'delete-book' book.id %}" type="submit">Excluir</a>
-            <a href="{% url 'sell-book' book.id %}" type="submit">Emprestar</a>
-        </div>
+        <form class="login-form">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.level_tag == 'success' %}
+                        <h4 class="success-message">{{ message }}</h4>
+                    {% else %}
+                        <h4 class="error-message">{{ message }}</h4>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </form>
     </main>
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">

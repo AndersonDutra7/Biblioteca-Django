@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from datetime import datetime
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 
 def index(request):
@@ -14,13 +15,6 @@ def index(request):
         print(f"book.name + book.gender")
     return render(request, "pages/index.html", {"books": books})
 
-    gender = models.ForeignKey(Genders, on_delete=models.CASCADE)
-    book_cover = models.ImageField(blank=False)
-    author = models.CharField(max_length=255)
-    pages = models.IntegerField()
-    qtd = models.IntegerField()
-    in_stock = models.BooleanField(default=False)
-
 
 def stockless(request):
     books = Books.objects.filter(in_stock=False)
@@ -29,10 +23,10 @@ def stockless(request):
 
 def search_book(request):
     q = request.GET.get("q")
-    if q == "":
-        books = Books.objects.filter(name__icontains=q)
-    else:
-        books = Books.objects.filter(name__icontains=q).order_by("cod")
+    books = Books.objects.all()
+    if q:
+        books = books.filter(name__icontains=q).order_by("cod")
+    print(books)
     return render(request, "pages/index.html", {"books": books})
 
 
@@ -86,14 +80,35 @@ def delete_book(request, id):
     return redirect("home")
 
 
-def sell_book(request, id):
-    book = Books.objects.get(id=id)
-    if int(book.qtd) == 0:
-        book.in_stock = False
-        book.save()
-        messages.success(request, "Este livro não possui estoque!")
+# Importe as bibliotecas e os modelos necessários
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.shortcuts import redirect
+from .models import Books
+
+
+def sell_book(request, book_id):
+    book = Books.objects.get(id=book_id)
+
+    if book.in_stock:
+        if int(book.qtd) > 0:
+            book.qtd -= 1
+            book.save()
+
+            if int(book.qtd) == 0:
+                book.in_stock = False
+                book.save()
+
+            messages.success(request, "Livro reservado com sucesso!")
+        else:
+            messages.error(request, "Não há mais estoque disponível para este livro.")
     else:
-        book.qtd -= 1
-        book.save()
-        messages.success(request, "Livro emprestado com sucesso!")
-    return redirect("livro-detail", id=id)
+        messages.error(
+            request, "Este livro não está disponível para reserva no momento."
+        )
+
+    return redirect("book-detail", id=book_id)
+
+
+def back(request):
+    return redirect("home")

@@ -15,7 +15,9 @@
     <header>
         <nav class="navbar">
             <div class="logo-navbar">
-                <img src="../../../media/Ralph Delivery (2).png" alt="">
+                <a href="{% url 'home' %}">
+                    <img src="../../../media/Ralph Delivery (2).png" alt="Home">
+                </a>
             </div>
             <div class="title-navbar">
                 <h1>Ralph & Teddy - The Library</h1>
@@ -27,18 +29,24 @@
     </header>
     <main>
         <div class="login-container">
-            {% if messages %}
-                {% for message in messages %}
-                <h3>{{message}}</h3>
-                {% endfor %}
-            {% endif %}
             <div class="login-logo">
             </div>
-            <form class="login-form">
-                <input type="text" placeholder="Nome" class="login-input">
-                <input type="password" placeholder="Senha" class="login-input">
+            <form class="login-form" method="POST"> {% csrf_token %}
+                <input type="text" placeholder="Nome" class="login-input" name="username">
+                <input type="password" placeholder="Senha" class="login-input" name="password">
                 <button type="submit" class="btn-login">Acessar</button>
             </form>
+            <form class="login-form">
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.level_tag == 'success' %}
+                            <h4 class="success-message">{{ message }}</h4>
+                        {% else %}
+                            <h4 class="error-message">{{ message }}</h4>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </form>                             
             <p class="login-registro">Não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
         </div>
     </main>
