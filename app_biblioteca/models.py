@@ -1,17 +1,20 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Genders(models.Model):
-
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
-    
+
     class meta:
-        verbose_name = 'Gender'
-        verbose_name_plural = 'Genders'
+        verbose_name = "Gender"
+        verbose_name_plural = "Genders"
+
 
 class Books(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     cod = models.IntegerField(unique=True)
     name = models.CharField(max_length=255)
     gender = models.ForeignKey(Genders, on_delete=models.CASCADE)
@@ -23,7 +26,7 @@ class Books(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     class meta:
-        verbose_name = 'Book'
-        verbose_name_plural = 'Books'
+        verbose_name = "Book"
+        verbose_name_plural = "Books"

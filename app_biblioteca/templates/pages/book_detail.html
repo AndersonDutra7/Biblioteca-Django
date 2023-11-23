@@ -27,7 +27,11 @@
     </header>
     <main>
         <div class="card">
-            <img src="{{ book.book_cover.url}}" alt="Livro">
+            {% if book.picture %}
+                <img src="{{ book.book_cover.url}}" alt="Livro">
+            {% else %}
+                <p>Nenhuma imagem disponível</p>
+            {% endif %}
             <div class="card-content">
                 <h2>{{ book.name }}</h2>
                 <p>Código: {{ book.cod }}</p>
@@ -39,6 +43,10 @@
                     <a href="{% url 'login' %}">Emprestar</a>
                 </div>
             </div>
+        </div>
+        <div>
+            <a href="{% url 'delete-book' book.id %}" type="submit">Excluir</a>
+            <a href="{% url 'sell-book' book.id %}" type="submit">Emprestar</a>
         </div>
     </main>
     <footer class="footer">

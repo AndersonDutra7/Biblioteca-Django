@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
+    <h1>{{user}}</h1>
     <header>
         <nav class="navbar">
             <div class="logo-navbar">
@@ -25,6 +26,7 @@
             </div>
         </nav>
     </header>
+    <h1><a href="{% url 'logout' %}">Sair</a></h1>
     <main>
         {% for book in books %}
         <div class="card">

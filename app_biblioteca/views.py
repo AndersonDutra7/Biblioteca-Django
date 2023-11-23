@@ -3,6 +3,8 @@ from .models import Books, Genders
 from random import randint
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
+from datetime import datetime
+from django.contrib import messages
 
 
 def index(request):
@@ -20,19 +22,18 @@ def index(request):
     in_stock = models.BooleanField(default=False)
 
 
-@login_required
-def login(request):
-    if request.user.is_authenticated:
-        if request.user.is_staff:
-            return render(request, "pages/login.html")
-        else:
-            return render(request, "pages/user.html")
+def stockless(request):
+    books = Books.objects.filter(in_stock=False)
+    return render(request, "pages/index.html", {"books": books})
+
+
+def search_book(request):
+    q = request.GET.get("q")
+    if q == "":
+        books = Books.objects.filter(name__icontains=q)
     else:
-        print("Usuário não cadastrado")
-
-
-def register_user(request):
-    return render(request, "pages/register_user.html")
+        books = Books.objects.filter(name__icontains=q).order_by("cod")
+    return render(request, "pages/index.html", {"books": books})
 
 
 def add_books(request):
@@ -57,6 +58,7 @@ def add_books(request):
             in_stock = False
 
         Books.objects.create(
+            user_id=request.user.id,
             cod=cod,
             name=name,
             gender_id=gender,
@@ -82,3 +84,16 @@ def book_detail(request, id):
 def delete_book(request, id):
     book = Books.objects.get(id=id).delete()
     return redirect("home")
+
+
+def sell_book(request, id):
+    book = Books.objects.get(id=id)
+    if int(book.qtd) == 0:
+        book.in_stock = False
+        book.save()
+        messages.success(request, "Este livro não possui estoque!")
+    else:
+        book.qtd -= 1
+        book.save()
+        messages.success(request, "Livro emprestado com sucesso!")
+    return redirect("livro-detail", id=id)
