@@ -1,1 +1,67 @@
-add_books
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produtos</title>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add-product.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>GRÊMIO DJANGO</h1>
+        </nav>
+    </header>
+    <main class="main">
+        <form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="dados-add-product">
+                <div class="imagem-add-product">
+                    <label for="file-input" class="custom-file-input">Escolher Arquivo</label>
+                    <input type="file" id="file-input" name="imagem" onchange="displayFileName(this)">
+                    <span id="file-name">Nenhum arquivo selecionado</span>
+                    <select name="category" id="">
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="inputs-add-product">
+                    <input type="text" name="name" placeholder="Nome">
+                    <input type="text" name="price" placeholder="Preço">
+                    <input type="text" name="description" placeholder="Descrição">
+                    <input type="text" name="qtd" placeholder="Quantidade">
+                    <input type="text" name="discount" placeholder="Desconto">    
+                </div>
+            </div>
+            <div class="buttons-add-product">
+                <button type="submit">Salvar</button>
+                <button type="submit" formaction="{% url 'add-product' %}"">Cancelar</button>
+                <button type="submit" formaction="{% url 'home' %}">Voltar</button>    
+            </div>
+        </form>
+    </main>
+    <footer class="footer">
+        <img src="../../../media/ralph-rosto.png" alt="Ralph">
+        <p>Created by Anderson Dutra</p>
+        <img src="../../../media/teddy-rosto.png" alt="Teddy">
+    </footer>
+
+    <script>
+        console.log(`{{ produtos }}`);
+
+        function displayFileName(input) {
+            const fileNameElement = document.getElementById("file-name");
+            if (input.files.length > 0) {
+                fileNameElement.textContent = input.files[0].name;
+            } else {
+                fileNameElement.textContent = "Nenhum arquivo selecionado";
+            }
+        }
+
+    </script>
+</body>
+</html>

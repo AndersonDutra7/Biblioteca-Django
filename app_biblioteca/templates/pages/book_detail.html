@@ -15,7 +15,7 @@
     <nav class="navbar">
         <div class="logo-navbar">
             <a href="{% url 'home' %}">
-                <img src="../../../media/Ralph Delivery (2).png" alt="Home">
+                <img src="../../../media/logo-sem-fundo.png" alt="Home">
             </a>
         </div>
         <div class="title-navbar">
@@ -56,7 +56,10 @@
                 <p>Autor: {{ book.author }}</p>
                 <p>Gênero: {{ book.gender }}</p>
                 <p>Páginas: {{ book.pages }}</p>
-                <p>Disponível: {% if book.in_stock %}Sim{% else %}Emprestado{% endif %}</p>
+                {% if user.is_superuser %}
+                    <p>Quantidade: {{book.qtd }}</p>
+                {% endif %}
+                <p>Disponível: {% if book.in_stock %}Sim{% else %}Não{% endif %}</p>
             </div> 
         </div>
         <div class="card">
@@ -64,13 +67,14 @@
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
                         <a href="{% url 'delete-book' book.id %}" type="submit">Excluir</a>
-                        <a href="{% url 'sell-book' book.id %}" type="submit">Editar</a>
-                        <a href="{% url 'sell-book' book.id %}" type="submit">Emprestar</a>
-                        <a href="{% url 'sell-book' book.id %}" type="submit">Devolver</a>
-                        <a href="{% url 'sell-book' book.id %}" type="submit">Voltar</a>
-                    {% endif %}
+                        <a href="{% url 'home' %}" type="submit">Editar</a>
+                        <a href="{% url 'loan-book' book.id %}" type="submit">Emprestar</a>
+                        <a href="{% url 'return-book' book.id %}" type="submit">Devolver</a>
+                        <a href="{% url 'home' %}" type="submit">Voltar</a>
+                    {% else %}
                         <a href="{% url 'book-detail' book.id %}" type="submit">Reservar</a>
                         <a href="{% url 'home' %}" type="submit">Voltar</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

@@ -10,7 +10,8 @@ urlpatterns = [
     path("search-book/", views.search_book, name="search-book"),
     path("stockless/", views.stockless, name="stockless"),
     path("delete-book/<int:id>/", views.delete_book, name="delete-book"),
-    path("sell-book/<int:id>/", views.sell_book, name="sell-book"),
+    path("loan-book/<int:id>/", views.loan_book, name="loan-book"),
+    path("return-book/<int:id>/", views.return_book, name="return-book"),
 ]
 
 if settings.DEBUG:

@@ -80,34 +80,25 @@ def delete_book(request, id):
     return redirect("home")
 
 
-# Importe as bibliotecas e os modelos necessários
-from django.shortcuts import get_object_or_404
-from django.contrib import messages
-from django.shortcuts import redirect
-from .models import Books
-
-
-def sell_book(request, book_id):
-    book = Books.objects.get(id=book_id)
-
-    if book.in_stock:
-        if int(book.qtd) > 0:
-            book.qtd -= 1
-            book.save()
-
-            if int(book.qtd) == 0:
-                book.in_stock = False
-                book.save()
-
-            messages.success(request, "Livro reservado com sucesso!")
-        else:
-            messages.error(request, "Não há mais estoque disponível para este livro.")
+def loan_book(request, id):
+    book = Books.objects.get(id=id)
+    if int(book.qtd) == 0:
+        book.in_stock = False
+        book.save()
+        messages.success(request, "Este livro não possui estoque!")
     else:
-        messages.error(
-            request, "Este livro não está disponível para reserva no momento."
-        )
+        book.qtd -= 1
+        book.save()
+        messages.success(request, "Empréstimo realizado com sucesso!")
+    return redirect("book-detail", id=id)
 
-    return redirect("book-detail", id=book_id)
+
+def return_book(request, id):
+    book = Books.objects.get(id=id)
+    book.qtd += 1
+    book.save()
+    messages.success(request, "Devolução realizada com sucesso!")
+    return redirect("book-detail", id=id)
 
 
 def back(request):
