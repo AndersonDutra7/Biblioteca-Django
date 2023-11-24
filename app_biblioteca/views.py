@@ -34,11 +34,11 @@ def add_books(request):
     if request.method == "POST":
         name = request.POST.get("name")
 
-        unique_cod = False
-        while not unique_cod:
-            cod = randint(100, 10000)
-            if not Books.objects.filter(cod=cod).exists():
-                unique_cod = True
+        last_book = Books.objects.order_by("-cod").first()
+        if last_book:
+            cod = last_book.cod + 1
+        else:
+            cod = 1
 
         gender = request.POST["gender"]
         book_cover = request.FILES.get("book_cover")

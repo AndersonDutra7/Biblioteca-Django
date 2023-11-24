@@ -6,62 +6,80 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adicionar Produtos</title>
-    <link rel="stylesheet" href="{% static 'css/global.css' %}">
-    <link rel="stylesheet" href="{% static 'css/add-product.css' %}">
+    <title>Adicionar Livros</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/add_books.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <h1>GRÊMIO DJANGO</h1>
+            <div class="logo-navbar">
+                <a href="{% url 'home' %}">
+                    <img src="../../../media/logo-sem-fundo.png" alt="Home">
+                </a>
+            </div>
+            <div class="title-navbar">
+                <h1>Ralph & Teddy - The Library</h1>
+            </div>
+            <div class="search-navbar">
+                <form method="get" action="{% url 'search-book' %}">
+                    <input type="text" name="q" placeholder="Pesquise um Livro">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}">Sair</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </form>
+                            
+            </div>
+            <div class="avatar">
+                {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <h2>Adm</h2>
+                {% else %}
+                    <h2>User</h2>
+                {% endif %}
+                {% endif %}
+            </div>              
         </nav>
     </header>
     <main class="main">
-        <form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
-            <div class="dados-add-product">
-                <div class="imagem-add-product">
+        <form class="form-add-books" method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+            <div class="card">
+                <div class="card-content">
+                    <input type="text" name="title" placeholder="Título">
+                    <input type="text" name="author" placeholder="Autor">
+                    <input type="text" name="total-pages" placeholder="Total Páginas">
+                    <input type="text" name="qtd" placeholder="Quantidade">
+                </div>
+                <div class="card-content">
                     <label for="file-input" class="custom-file-input">Escolher Arquivo</label>
                     <input type="file" id="file-input" name="imagem" onchange="displayFileName(this)">
                     <span id="file-name">Nenhum arquivo selecionado</span>
-                    <select name="category" id="">
-                        {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    <select name="gender" id="">
+                        {% for gender in genders %}
+                        <option value="{{ gender.id }}">{{ gender.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="inputs-add-product">
-                    <input type="text" name="name" placeholder="Nome">
-                    <input type="text" name="price" placeholder="Preço">
-                    <input type="text" name="description" placeholder="Descrição">
-                    <input type="text" name="qtd" placeholder="Quantidade">
-                    <input type="text" name="discount" placeholder="Desconto">    
-                </div>
             </div>
-            <div class="buttons-add-product">
-                <button type="submit">Salvar</button>
-                <button type="submit" formaction="{% url 'add-product' %}"">Cancelar</button>
-                <button type="submit" formaction="{% url 'home' %}">Voltar</button>    
+            <div class="card">
+                <div class="card-button">
+                    <a href="{% url 'add-books' %}" type="submit">Salvar</a>
+                    <a href="{% url 'home' %}" type="submit">Cancelar</a>
+                    <a href="{% url 'home' %}" type="submit">Voltar</a>
+                </div>   
             </div>
         </form>
     </main>
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">
+        <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>
         <p>Created by Anderson Dutra</p>
+        <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
         <img src="../../../media/teddy-rosto.png" alt="Teddy">
     </footer>
-
-    <script>
-        console.log(`{{ produtos }}`);
-
-        function displayFileName(input) {
-            const fileNameElement = document.getElementById("file-name");
-            if (input.files.length > 0) {
-                fileNameElement.textContent = input.files[0].name;
-            } else {
-                fileNameElement.textContent = "Nenhum arquivo selecionado";
-            }
-        }
-
-    </script>
 </body>
 </html>

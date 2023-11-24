@@ -45,6 +45,11 @@
     </header>
     {% if books %}
     <main>
+        {% if user.is_superuser %}
+            <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livros</a>
+            <a class="add-button" href="{% url 'add-books' %}" type="submit">Listar Livros</a>
+            <a class="add-button" href="{% url 'add-books' %}" type="submit">Empréstimos</a>
+        {% endif %}
         {% for book in books %}
         <div class="card">
             <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_cover.url}}" alt="{{ book.name }}"></a>
