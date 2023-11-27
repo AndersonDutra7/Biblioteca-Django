@@ -32,15 +32,15 @@
                 </form>
                                
             </div>
+            {% if user.is_authenticated %}
             <div class="avatar">
-                {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                     <h2>Adm</h2>
                   {% else %}
                     <h2>User</h2>
                   {% endif %}
-                {% endif %}
-              </div>              
+              </div>      
+            {% endif %}        
         </nav>
     </header>
     {% if books %}

@@ -75,3 +75,23 @@
     width: 300px;
     border: 1px solid #111111;
 }
+
+.card-button button {
+    display: flex;
+    padding: 10px 20px;
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    background: linear-gradient(to bottom, #94c6f8 5%, #037ffc 100%);
+    color: rgb(8, 30, 53);
+    box-shadow:inset 0px 1px 0px 0px #fce2c1;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.card-button button:hover {
+    color: aliceblue;
+}

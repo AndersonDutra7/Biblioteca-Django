@@ -46,7 +46,7 @@ def add_books(request):
         gender = request.POST["gender"]
         book_cover = request.FILES.get("book_cover")
         author = request.POST["author"]
-        description = request.POST.get("description")
+        # description = request.POST.get("description")
         pages = request.POST["pages"]
         qtd = request.POST["qtd"]
 
@@ -61,7 +61,7 @@ def add_books(request):
             gender_id=gender,
             book_cover=book_cover,
             author=author,
-            description=description,
+            # description=description,
             pages=pages,
             qtd=qtd,
             in_stock=in_stock,
