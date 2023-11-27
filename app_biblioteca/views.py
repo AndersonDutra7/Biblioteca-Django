@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Books, Genders
+from .models import Books, Genders, Reservations, Loans
 from random import randint
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from datetime import datetime
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from .forms import BookForm
 
 
 def index(request):
@@ -80,6 +83,23 @@ def delete_book(request, id):
     return redirect("home")
 
 
+def edit_book(request, id):
+    book = Books.objects.get(id=id)
+
+    if request.method == "POST":
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Livro atualizado com sucesso.")
+            return redirect("book-detail", id=id)
+        else:
+            messages.error(request, "Por favor, corrija os erros no formulário.")
+    else:
+        form = BookForm(instance=book)
+
+    return render(request, "pages/edit_book.html", {"form": form, "book": book})
+
+
 def loan_book(request, id):
     book = Books.objects.get(id=id)
     if int(book.qtd) == 0:
@@ -103,3 +123,44 @@ def return_book(request, id):
 
 def back(request):
     return redirect("home")
+
+
+@login_required
+def reserve_book(request, id):
+    book = get_object_or_404(Books, pk=id)
+    user = request.user
+
+    if book.in_stock:
+        reservation = Reservations.objects.create(book=book, user=user)
+        messages.success(request, f"O livro {book.name} foi reservado com sucesso!")
+    else:
+        messages.warning(
+            request, f"O livro {book.name} não está disponível para reserva."
+        )
+
+    return redirect("book-detail", id=id)
+
+
+@login_required
+def lend_book(request, id):
+    book = get_object_or_404(Books, pk=id)
+    admin = User.objects.get(is_staff=True)
+
+    if book.in_stock:
+        loan = Loans.objects.create(book=book, user=request.user)
+        book.in_stock = False
+        book.save()
+        send_mail(
+            "Livro Emprestado",
+            f"O livro {book.name} foi emprestado para {request.user.username}.",
+            "from@example.com",
+            [request.user.email],
+            fail_silently=False,
+        )
+        messages.success(request, f"O livro {book.name} foi emprestado com sucesso!")
+    else:
+        messages.warning(
+            request, f"O livro {book.name} não está disponível para empréstimo."
+        )
+
+    return redirect("book-detail", id=id)

@@ -46,17 +46,17 @@
         </nav>
     </header>
     <main class="main">
-        <form class="form-add-books" method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+        <form class="form-add-books" method="POST" action="{% url 'add-books' %}" enctype="multipart/form-data"> {% csrf_token %}
             <div class="card">
                 <div class="card-content">
-                    <input type="text" name="title" placeholder="Título">
+                    <input type="text" name="name" placeholder="Título">
                     <input type="text" name="author" placeholder="Autor">
-                    <input type="text" name="total-pages" placeholder="Total Páginas">
+                    <input type="text" name="pages" placeholder="Total Páginas">
                     <input type="text" name="qtd" placeholder="Quantidade">
                 </div>
                 <div class="card-content">
                     <label for="file-input" class="custom-file-input">Escolher Arquivo</label>
-                    <input type="file" id="file-input" name="imagem" onchange="displayFileName(this)">
+                    <input type="file" id="file-input" name="book_cover" onchange="displayFileName(this)">
                     <span id="file-name">Nenhum arquivo selecionado</span>
                     <select name="gender" id="">
                         {% for gender in genders %}
@@ -67,8 +67,8 @@
             </div>
             <div class="card">
                 <div class="card-button">
-                    <a href="{% url 'add-books' %}" type="submit">Salvar</a>
-                    <a href="{% url 'home' %}" type="submit">Cancelar</a>
+                    <a href="{% url 'home' %}" type="submit">Salvar</a>
+                    <a href="{% url 'add-books' %}" type="submit">Cancelar</a>
                     <a href="{% url 'home' %}" type="submit">Voltar</a>
                 </div>   
             </div>

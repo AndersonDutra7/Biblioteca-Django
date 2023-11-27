@@ -30,3 +30,29 @@ class Books(models.Model):
     class meta:
         verbose_name = "Book"
         verbose_name_plural = "Books"
+
+
+class Reservations(models.Model):
+    book = models.ForeignKey(Books, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bookking_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} reservou {self.book.name}"
+
+    class Meta:
+        verbose_name = "Reservation"
+        verbose_name_plural = "Reservations"
+
+
+class Loans(models.Model):
+    book = models.ForeignKey(Books, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    loan_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} pegou emprestado {self.book.name}"
+
+    class Meta:
+        verbose_name = "Loan"
+        verbose_name_plural = "Loans"

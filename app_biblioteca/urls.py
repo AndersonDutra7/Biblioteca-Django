@@ -12,6 +12,8 @@ urlpatterns = [
     path("delete-book/<int:id>/", views.delete_book, name="delete-book"),
     path("loan-book/<int:id>/", views.loan_book, name="loan-book"),
     path("return-book/<int:id>/", views.return_book, name="return-book"),
+    path("reserve-book/<int:id>/", views.reserve_book, name="reserve-book"),
+    path("edit-book/<int:id>/", views.edit_book, name="edit-book"),
 ]
 
 if settings.DEBUG:
