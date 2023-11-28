@@ -1,9 +1,8 @@
 /* Este css, recebe o mesmo index.css, contudo, se torna necessário estilizar os itens abaixo */
 
 main{
-    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    margin: 0;
 }
 
 .card-content{

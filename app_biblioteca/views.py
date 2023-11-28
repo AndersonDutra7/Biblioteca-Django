@@ -19,6 +19,11 @@ def index(request):
     return render(request, "pages/index.html", {"books": books})
 
 
+def index_list(request):
+    books = Books.objects.all().order_by("cod")
+    return render(request, "pages/index_list.html", {"books": books})
+
+
 def stockless(request):
     books = Books.objects.filter(in_stock=False)
     return render(request, "pages/index.html", {"books": books})

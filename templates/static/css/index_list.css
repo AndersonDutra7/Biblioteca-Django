@@ -1,0 +1,46 @@
+body{
+    overflow: auto;
+}
+
+main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin: .5% 2%;
+}
+
+.book-list {
+    max-width: 80%;
+    list-style: none;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.book-list thead{
+    background-color: #94c6f8;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
+}
+
+.book-list th, .book-list td{
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.book-list tbody tr:hover {
+    background-color: #94c6f8;
+}
+
+.book-list tbody a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.book-list tbody a:hover {
+    text-decoration: underline;
+}
+
+

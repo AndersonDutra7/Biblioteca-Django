@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ralph & Teddy - The Library</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index_list.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
@@ -30,41 +31,52 @@
                         <a href="{% url 'login' %}">Login</a>
                     {% endif %}
                 </form>
-                               
             </div>
             {% if user.is_authenticated %}
-            <div class="avatar">
-                  {% if user.is_superuser %}
-                    <h2>Adm</h2>
-                  {% else %}
-                    <h2>User</h2>
-                  {% endif %}
-              </div>      
-            {% endif %}        
+                <div class="avatar">
+                    {% if user.is_superuser %}
+                        <h2>Adm</h2>
+                    {% else %}
+                        <h2>User</h2>
+                    {% endif %}
+                </div>
+            {% endif %}
         </nav>
         <nav class="navbar-links">
             {% if user.is_superuser %}
-            <div class="admin-links">
-                <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livros</a>
-                <a class="add-button" href="{% url 'index-list' %}" type="submit">Listar Livros</a>
-                <a class="add-button" href="{% url 'add-books' %}" type="submit">Empréstimos</a>
-            </div>
-        {% endif %}
+                <div class="admin-links">
+                    <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livros</a>
+                    <a class="add-button" href="{% url 'home' %}" type="submit">Catálogo</a>
+                    <a class="add-button" href="{% url 'home' %}" type="submit">Empréstimos</a>
+                </div>
+            {% endif %}
         </nav>
     </header>
     {% if books %}
-    <main>
-        {% for book in books %}
-            <div class="card">
-                <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_cover.url}}" alt="{{ book.name }}"></a>
-                <div class="card-content">
-                    <h2>{{ book.name }}</h2>
-                    <p>Autor: {{ book.author }}</p>
-                    <p>Gênero: {{ book.gender }}</p>
-                </div>
-            </div>
-            {% endfor %}
-    </main>
+        <main>
+            <table class="book-list">
+                <thead>
+                    <tr>
+                        <th>Cod</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Gênero</th>
+                        <th>Disponível</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{book.cod}}</td>
+                        <td><a href="{% url 'book-detail' book.id %}">{{book.name}}</a></td>
+                        <td>{{book.author}}</td>
+                        <td>{{book.gender}}</td>
+                        <td>{{book.in_stock}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>    
+            </table>
+        </main>
     {% else %}
         <p class="no-results-message">Desculpe! Nenhum livro encontrado.</p>
     {% endif %}
@@ -75,6 +87,5 @@
         <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
         <img src="../../../media/teddy-rosto.png" alt="Teddy">
     </footer>
-
 </body>
 </html>
