@@ -46,9 +46,30 @@ def add_books(request):
         gender = request.POST["gender"]
         book_cover = request.FILES.get("book_cover")
         author = request.POST["author"]
-        # description = request.POST.get("description")
+        description = request.POST.get("description")
+
         pages = request.POST["pages"]
         qtd = request.POST["qtd"]
+
+        if (
+            not name
+            or not gender
+            or not book_cover
+            or not author
+            or not pages
+            or not qtd
+        ):
+            messages.error(request, "Por favor, preencha todos os campos.")
+            return redirect("add-books")
+
+        try:
+            pages = int(pages)
+            qtd = int(qtd)
+        except ValueError:
+            messages.error(
+                request, "As páginas e a quantidade devem ser números inteiros."
+            )
+            return redirect("add-books")
 
         in_stock = True
         if int(qtd) == 0:
@@ -61,12 +82,13 @@ def add_books(request):
             gender_id=gender,
             book_cover=book_cover,
             author=author,
-            # description=description,
+            description=description,
             pages=pages,
             qtd=qtd,
             in_stock=in_stock,
         )
 
+        messages.success(request, "Livro adicionado com sucesso!")
         return redirect("home")
     else:
         genders = Genders.objects.all()

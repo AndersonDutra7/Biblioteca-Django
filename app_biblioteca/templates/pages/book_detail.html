@@ -33,15 +33,15 @@
                 </form>
                             
             </div>
+            {% if user.is_authenticated %}
             <div class="avatar">
-                {% if user.is_authenticated %}
-                {% if user.is_superuser %}
+                  {% if user.is_superuser %}
                     <h2>Adm</h2>
-                {% else %}
+                  {% else %}
                     <h2>User</h2>
-                {% endif %}
-                {% endif %}
-            </div>              
+                  {% endif %}
+              </div>      
+            {% endif %}              
         </nav>
     </header>
     <main>
@@ -76,6 +76,9 @@
                         <a href="{% url 'reserve-book' book.id %}" type="submit">Reservar</a>
                         <a href="{% url 'home' %}" type="submit">Voltar</a>
                     {% endif %}
+                {% else %}
+                    <a href="{% url 'reserve-book' book.id %}" type="submit">Reservar</a>
+                    <a href="{% url 'home' %}" type="submit">Voltar</a>    
                 {% endif %}
             </div>
         </div>

@@ -42,24 +42,28 @@
               </div>      
             {% endif %}        
         </nav>
+        <nav class="navbar-links">
+            {% if user.is_superuser %}
+            <div class="admin-links">
+                <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livros</a>
+                <a class="add-button" href="{% url 'add-books' %}" type="submit">Listar Livros</a>
+                <a class="add-button" href="{% url 'add-books' %}" type="submit">Empréstimos</a>
+            </div>
+        {% endif %}
+        </nav>
     </header>
     {% if books %}
     <main>
-        {% if user.is_superuser %}
-            <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livros</a>
-            <a class="add-button" href="{% url 'add-books' %}" type="submit">Listar Livros</a>
-            <a class="add-button" href="{% url 'add-books' %}" type="submit">Empréstimos</a>
-        {% endif %}
         {% for book in books %}
-        <div class="card">
-            <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_cover.url}}" alt="{{ book.name }}"></a>
-            <div class="card-content">
-                <h2>{{ book.name }}</h2>
-                <p>Autor: {{ book.author }}</p>
-                <p>Gênero: {{ book.gender }}</p>
+            <div class="card">
+                <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_cover.url}}" alt="{{ book.name }}"></a>
+                <div class="card-content">
+                    <h2>{{ book.name }}</h2>
+                    <p>Autor: {{ book.author }}</p>
+                    <p>Gênero: {{ book.gender }}</p>
+                </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
     </main>
     {% else %}
         <p class="no-results-message">Desculpe! Nenhum livro encontrado.</p>
