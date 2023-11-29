@@ -1,12 +1,13 @@
 main{
     justify-content: center;
     overflow: hidden;
+    margin: 0;
 }
 
 .login-container {
     width: 300px;
     padding: 2%;
-    margin-top: -20px;
+    margin-top: 1%;
     border-radius: 5px;
     display: flex;
     flex-direction: column;

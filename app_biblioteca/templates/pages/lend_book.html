@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ralph & Teddy - The Library</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/book_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lean_book.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 <body>
@@ -30,7 +32,7 @@
                         <a href="{% url 'login' %}">Login</a>
                     {% endif %}
                 </form>
-                               
+                            
             </div>
             {% if user.is_authenticated %}
             <div class="avatar">
@@ -40,39 +42,42 @@
                     <h2>User</h2>
                   {% endif %}
               </div>      
-            {% endif %}        
-        </nav>
-        <nav class="navbar-links">
-            {% if user.is_superuser %}
-            <div class="admin-links">
-                <a class="add-button" href="{% url 'add-books' %}" type="submit">Add Livros</a>
-                <a class="add-button" href="{% url 'index-list' %}" type="submit">Listar Livros</a>
-                <a class="add-button" href="{% url 'view-loans' %}" type="submit">Empréstimos</a>
-            </div>
-        {% endif %}
+            {% endif %}              
         </nav>
     </header>
-    {% if books %}
     <main>
-        {% for book in books %}
-            <div class="card">
-                <a href="{% url 'book-detail' book.id %}"><img src="{{ book.book_cover.url}}" alt="{{ book.name }}"></a>
-                <div class="card-content">
-                    <h2>{{ book.name }}</h2>
-                    <p>Autor: {{ book.author }}</p>
-                    <p>Gênero: {{ book.gender }}</p>
-                    <!-- <div class="card-content description">
-                        <p>Descrição</p>
-                        <p>{{book.description }}</p>
-                    </div>
-                    <div class="toggle-btn" onclick="toggleDescription()">Leia mais</div> -->
-                </div>
+        {% block content %}
+        <div class="card">
+            {% if book.book_cover %}
+                <img src="{{ book.book_cover.url}}" alt="{{ book.name }}">
+            {% else %}
+                <img src="../../../media/img-nao-disp.png" alt="Home">
+            {% endif %}
+            <div class="card-content">
+                <h2>{{ book.name }}</h2>
+                <input type="text" name="name" placeholder="Aluno">
+                <input type="text" name="email" placeholder="Email">
+                <form method="post">
+                    {% csrf_token %}                  
+                    <label for="selected_user">Escolha um usuário da lista de reservas:</label>
+                    <select name="selected_user" id="selected_user">
+                    <option value="">-- Selecione um usuário --</option>
+                    {% for reservation in reservations %}
+                        <option value="{{ reservation.user.id }}">{{ reservation.user.username }}</option>
+                    {% endfor %}
+                    </select>
+                </form>
             </div>
-            {% endfor %}
+        </div>
+        <div class="card">
+            <div class="card-button">
+                <button type="submit">Confirmar</button>
+                <a href="{% url 'lend-book' book.id %}" type="submit">Cancelar</a>
+                <a href="{% url 'home' %}" type="submit">Voltar</a>
+            </div>   
+        </div>
+        {% endblock %}
     </main>
-    {% else %}
-        <p class="no-results-message">Desculpe! Nenhum livro encontrado.</p>
-    {% endif %}
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">
         <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>
@@ -80,17 +85,5 @@
         <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
         <img src="../../../media/teddy-rosto.png" alt="Teddy">
     </footer>
-    <!-- <script>
-        function toggleDescription() {
-            const description = document.querySelector('.card-content .description');
-            description.classList.toggle('expanded');
-            const btn = document.querySelector('.toggle-btn');
-            if (description.classList.contains('expanded')) {
-                btn.textContent = 'Mostrar menos';
-            } else {
-                btn.textContent = 'Leia mais';
-            }
-        }
-    </script> -->
 </body>
 </html>

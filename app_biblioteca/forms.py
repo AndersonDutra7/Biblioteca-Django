@@ -3,6 +3,11 @@ from .models import Books
 
 
 class BookForm(forms.ModelForm):
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={"class": "input-field", "rows": 4, "cols": 50}),
+        required=False,  # Pode ajustar conforme necessário
+    )
+
     class Meta:
         model = Books
         fields = [
@@ -14,6 +19,7 @@ class BookForm(forms.ModelForm):
             "pages",
             "qtd",
             "in_stock",
+            "description",
         ]
 
         widgets = {

@@ -61,7 +61,7 @@
                     <p>Quantidade: {{book.qtd }}</p>
                 {% endif %}
                 <p>Disponível: {% if book.in_stock %}Sim{% else %}Não{% endif %}</p>
-            </div> 
+            </div>
         </div>
         <div class="card">
             <div class="card-button">
@@ -69,7 +69,7 @@
                     {% if user.is_superuser %}
                         <a href="{% url 'delete-book' book.id %}" type="submit">Excluir</a>
                         <a href="{% url 'edit-book' book.id %}" type="submit">Editar</a>
-                        <a href="{% url 'loan-book' book.id %}" type="submit">Emprestar</a>
+                        <a href="{% url 'lend-book' book.id %}" type="submit">Emprestar</a>
                         <a href="{% url 'return-book' book.id %}" type="submit">Devolver</a>
                         <a href="{% url 'home' %}" type="submit">Voltar</a>
                     {% else %}

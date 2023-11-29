@@ -52,33 +52,35 @@
             {% endif %}
         </nav>
     </header>
-    {% if books %}
-        <main>
-            <table class="book-list">
-                <thead>
+    {% if loans %}
+    <main>
+        <table class="book-list">
+            <thead>
+                <tr>
+                    <th>Cod</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Aluno</th>
+                    <th>Data</th>
+                    <th>Nº</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
                     <tr>
-                        <th>Cod</th>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Gênero</th>
-                        <th>Disponível</th>
+                        <td>{{ loan.book.cod }}</td>
+                        <td><a href="{% url 'book-detail' loan.book.id %}">{{ loan.book.name }}</a></td>
+                        <td>{{ loan.book.author }}</td>
+                        <td>{{ loan.user.username }}</td>
+                        <td>{{ loan.loan_date }}</td>
+                        <td>{{ loan.loan_number }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for book in books %}
-                    <tr>
-                        <td>{{book.cod}}</td>
-                        <td><a href="{% url 'book-detail' book.id %}">{{book.name}}</a></td>
-                        <td>{{book.author}}</td>
-                        <td>{{book.gender}}</td>
-                        <td>{{book.in_stock}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>    
-            </table>
-        </main>
+                {% endfor %}
+            </tbody>    
+        </table>
+    </main>    
     {% else %}
-        <p class="no-results-message">Desculpe! Nenhum livro encontrado.</p>
+        <p class="no-results-message">Desculpe! Nenhum empréstimo encontrado.</p>
     {% endif %}
     <footer class="footer">
         <img src="../../../media/ralph-rosto.png" alt="Ralph">

@@ -94,7 +94,10 @@ def add_books(request):
         )
 
         messages.success(request, "Livro adicionado com sucesso!")
-        return redirect("home")
+        # genders = Genders.objects.all()
+        # return render(request, "pages/add_books.html", {"genders": genders})
+        messages.success(request, "Livro adicionado com sucesso!")
+        return redirect("add-books")
     else:
         genders = Genders.objects.all()
         return render(request, "pages/add_books.html", {"genders": genders})
@@ -127,24 +130,32 @@ def edit_book(request, id):
     return render(request, "pages/edit_book.html", {"form": form, "book": book})
 
 
-def loan_book(request, id):
-    book = Books.objects.get(id=id)
-    if int(book.qtd) == 0:
-        book.in_stock = False
-        book.save()
-        messages.success(request, "Este livro não possui estoque!")
-    else:
-        book.qtd -= 1
-        book.save()
-        messages.success(request, "Empréstimo realizado com sucesso!")
-    return redirect("book-detail", id=id)
+# def loan_book(request, id):
+#     book = Books.objects.get(id=id)
+#     if int(book.qtd) == 0:
+#         book.in_stock = False
+#         book.save()
+#         messages.success(request, "Este livro não possui estoque!")
+#     else:
+#         book.qtd -= 1
+#         book.save()
+#         messages.success(request, "Empréstimo realizado com sucesso!")
+#     return redirect("book-detail", id=id)
 
 
 def return_book(request, id):
     book = Books.objects.get(id=id)
-    book.qtd += 1
-    book.save()
-    messages.success(request, "Devolução realizada com sucesso!")
+    loan = Loans.objects.filter(book=book).first()
+
+    if loan:
+        book.qtd += 1
+        book.in_stock = True
+        book.save()
+        loan.delete()
+        messages.success(request, "Devolução realizada com sucesso!")
+    else:
+        messages.warning(request, "Não há empréstimo para o livro.")
+
     return redirect("book-detail", id=id)
 
 
@@ -154,7 +165,7 @@ def back(request):
 
 @login_required
 def reserve_book(request, id):
-    book = get_object_or_404(Books, pk=id)
+    book = Books.objects.get(id=id)
     user = request.user
 
     if book.in_stock:
@@ -170,24 +181,50 @@ def reserve_book(request, id):
 
 @login_required
 def lend_book(request, id):
-    book = get_object_or_404(Books, pk=id)
-    admin = User.objects.get(is_staff=True)
+    book = get_object_or_404(Books, id=id)
+    reservations = Reservations.objects.filter(book=book)
 
-    if book.in_stock:
-        loan = Loans.objects.create(book=book, user=request.user)
-        book.in_stock = False
-        book.save()
-        send_mail(
-            "Livro Emprestado",
-            f"O livro {book.name} foi emprestado para {request.user.username}.",
-            "from@example.com",
-            [request.user.email],
-            fail_silently=False,
-        )
-        messages.success(request, f"O livro {book.name} foi emprestado com sucesso!")
-    else:
-        messages.warning(
-            request, f"O livro {book.name} não está disponível para empréstimo."
-        )
+    if request.method == "POST":
+        selected_user_id = request.POST.get("selected_user")
 
-    return redirect("book-detail", id=id)
+        if selected_user_id:
+            selected_user = get_object_or_404(User, id=selected_user_id)
+
+            # Lógica para criar um empréstimo
+            loan = Loans.objects.create(book=book, user=selected_user)
+
+            # Atualizar a quantidade de livros
+            book.qtd -= 1
+            if book.qtd == 0:
+                book.in_stock = False
+            else:
+                book.in_stock = True
+            book.save()
+
+            # Excluir a reserva
+            reservation = Reservations.objects.filter(
+                book=book, user=selected_user
+            ).first()
+            if reservation:
+                reservation.delete()
+
+            messages.success(
+                request,
+                f"Empréstimo realizado para {selected_user.name} com sucesso!",
+            )
+
+        else:
+            messages.error(
+                request,
+                f"Falha ao emprestar! O livro {book.name} não possui estoque.!",
+            )
+
+    return render(
+        request, "pages/lend_book.html", {"book": book, "reservations": reservations}
+    )
+
+
+@login_required
+def view_loans(request):
+    loans = Loans.objects.all()
+    return render(request, "pages/view_loans.html", {"loans": loans})

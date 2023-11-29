@@ -179,3 +179,17 @@ main{
 .success-message{
     color: blue;
 }
+
+.description {
+    max-height: 10rem;  /* Defina a altura máxima desejada (3 linhas neste exemplo) */
+    overflow: hidden;
+}
+
+.expanded {
+    max-height: none;  /* Permite que o conteúdo expanda completamente */
+}
+
+.toggle-btn {
+    cursor: pointer;
+    color: blue;
+}

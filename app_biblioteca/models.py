@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 class Genders(models.Model):
@@ -20,6 +21,7 @@ class Books(models.Model):
     gender = models.ForeignKey(Genders, on_delete=models.CASCADE)
     book_cover = models.ImageField(blank=False)
     author = models.CharField(max_length=255)
+    description = models.TextField()
     pages = models.IntegerField()
     qtd = models.IntegerField()
     in_stock = models.BooleanField(default=False)
@@ -35,7 +37,7 @@ class Books(models.Model):
 class Reservations(models.Model):
     book = models.ForeignKey(Books, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bookking_date = models.DateTimeField(auto_now_add=True)
+    reserve_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.username} reservou {self.book.name}"
@@ -48,6 +50,7 @@ class Reservations(models.Model):
 class Loans(models.Model):
     book = models.ForeignKey(Books, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    loan_number = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
     loan_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
