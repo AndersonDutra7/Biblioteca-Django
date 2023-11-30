@@ -74,7 +74,7 @@
                         <a href="{% url 'home' %}" type="submit">Voltar</a>
                     {% else %}
                         <a href="{% url 'reserve-book' book.id %}" type="submit">Reservar</a>
-                        <a href="{% url 'home' %}" type="submit">Voltar</a>
+                        <button type="button" onclick="history.back(), preventDefault()">Voltar</button>
                     {% endif %}
                 {% else %}
                     <a href="{% url 'reserve-book' book.id %}" type="submit">Reservar</a>

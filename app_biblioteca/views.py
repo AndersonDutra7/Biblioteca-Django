@@ -1,19 +1,17 @@
 from django.shortcuts import render, redirect
 from .models import Books, Genders, Reservations, Loans
-from random import randint
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate
-from datetime import datetime
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from .forms import BookForm
-import subprocess
 import smtplib
-from email.message import EmailMessage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import sys
+sys.path.append("Biblioteca-Django/venv/credentials/")
+
+
 
 
 def index(request):
@@ -173,11 +171,6 @@ def return_book(request, id):
 
     return render(request, "pages/return_book.html", {"book": book, "loans": loans})
 
-
-def back(request):
-    return redirect("home")
-
-
 @login_required
 def reserve_book(request, id):
     book = Books.objects.get(id=id)
@@ -248,12 +241,10 @@ def view_loans(request):
 
 
 def sendmail(usermail, bookname):
-    EMAIL = "andersonrdutra7@gmail.com"
-    PASSWORD = "uzbvhbqytuayxijo"
 
     msg = MIMEMultipart()
     msg["subject"] = "Confirmação de Empréstimo"
-    msg["From"] = EMAIL
+    msg["From"] = credentials.EMAIL
     msg["To"] = usermail
     bodymail = f"""
     <html>
@@ -272,5 +263,5 @@ def sendmail(usermail, bookname):
     msg.attach(MIMEText(bodymail, "html"))
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-        smtp.login(EMAIL, PASSWORD)
+        smtp.login(credentials.EMAIL, credentials.PASSWORD)
         smtp.send_message(msg)

@@ -71,7 +71,7 @@
                 <div class="card-button">
                     <button type="submit">Salvar</button>
                     <a href="{% url 'add-books' %}" type="submit">Cancelar</a>
-                    <a href="{% url 'home' %}" type="submit">Voltar</a>
+                    <button type="button" onclick="history.back(), preventDefault()">Voltar</button>
                 </div>   
             </div>
             <form class="login-form">
