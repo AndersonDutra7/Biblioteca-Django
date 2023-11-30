@@ -9,6 +9,11 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from .forms import BookForm
+import subprocess
+import smtplib
+from email.message import EmailMessage
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 def index(request):
@@ -27,6 +32,11 @@ def index_list(request):
 def stockless(request):
     books = Books.objects.filter(in_stock=False)
     return render(request, "pages/index.html", {"books": books})
+
+
+def stockless_list(request):
+    books = Books.objects.filter(in_stock=False)
+    return render(request, "pages/index_list.html", {"books": books})
 
 
 def search_book(request):
@@ -94,9 +104,6 @@ def add_books(request):
         )
 
         messages.success(request, "Livro adicionado com sucesso!")
-        # genders = Genders.objects.all()
-        # return render(request, "pages/add_books.html", {"genders": genders})
-        messages.success(request, "Livro adicionado com sucesso!")
         return redirect("add-books")
     else:
         genders = Genders.objects.all()
@@ -130,33 +137,41 @@ def edit_book(request, id):
     return render(request, "pages/edit_book.html", {"form": form, "book": book})
 
 
-# def loan_book(request, id):
-#     book = Books.objects.get(id=id)
-#     if int(book.qtd) == 0:
-#         book.in_stock = False
-#         book.save()
-#         messages.success(request, "Este livro não possui estoque!")
-#     else:
-#         book.qtd -= 1
-#         book.save()
-#         messages.success(request, "Empréstimo realizado com sucesso!")
-#     return redirect("book-detail", id=id)
-
-
 def return_book(request, id):
-    book = Books.objects.get(id=id)
-    loan = Loans.objects.filter(book=book).first()
+    book = get_object_or_404(Books, id=id)
+    loans = Loans.objects.filter(book=book)
 
-    if loan:
-        book.qtd += 1
-        book.in_stock = True
-        book.save()
-        loan.delete()
-        messages.success(request, "Devolução realizada com sucesso!")
-    else:
-        messages.warning(request, "Não há empréstimo para o livro.")
+    if request.method == "POST":
+        selected_user_id = request.POST.get("selected_user")
 
-    return redirect("book-detail", id=id)
+        if selected_user_id:
+            selected_user = get_object_or_404(User, id=selected_user_id)
+
+            loan = Loans.objects.filter(book=book, user=selected_user).first()
+            if loan:
+                loan.delete()
+
+            messages.success(
+                request,
+                f"Devolução do livro {book.name} realizada com sucesso!",
+            )
+
+            book.qtd += 1
+            book.in_stock = True
+            book.save()
+
+        else:
+            messages.error(
+                request,
+                f"Falha ao devolver! O livro {book.name} não possui empréstimo.",
+            )
+            return render(
+                request,
+                "pages/return_book.html",
+                {"book": book, "loans": loans},
+            )
+
+    return render(request, "pages/return_book.html", {"book": book, "loans": loans})
 
 
 def back(request):
@@ -189,34 +204,36 @@ def lend_book(request, id):
 
         if selected_user_id:
             selected_user = get_object_or_404(User, id=selected_user_id)
-
-            # Lógica para criar um empréstimo
             loan = Loans.objects.create(book=book, user=selected_user)
 
-            # Atualizar a quantidade de livros
-            book.qtd -= 1
-            if book.qtd == 0:
-                book.in_stock = False
+            if book.in_stock:
+                reservation = Reservations.objects.filter(
+                    book=book, user=selected_user
+                ).first()
+                if reservation:
+                    reservation.delete()
+
+                sendmail(selected_user.email, book.name)
+
+                messages.success(
+                    request,
+                    f"Empréstimo realizado para {selected_user.username} com sucesso!",
+                )
+
+                book.qtd -= 1
+                if book.qtd <= 0:
+                    book.in_stock = False
+                book.save()
             else:
-                book.in_stock = True
-            book.save()
-
-            # Excluir a reserva
-            reservation = Reservations.objects.filter(
-                book=book, user=selected_user
-            ).first()
-            if reservation:
-                reservation.delete()
-
-            messages.success(
-                request,
-                f"Empréstimo realizado para {selected_user.name} com sucesso!",
-            )
+                messages.error(
+                    request,
+                    f"Falha ao emprestar! O livro {book.name} não possui estoque.!",
+                )
 
         else:
             messages.error(
                 request,
-                f"Falha ao emprestar! O livro {book.name} não possui estoque.!",
+                f"Falha ao emprestar! O livro {book.name} não possui reserva.!",
             )
 
     return render(
@@ -228,3 +245,32 @@ def lend_book(request, id):
 def view_loans(request):
     loans = Loans.objects.all()
     return render(request, "pages/view_loans.html", {"loans": loans})
+
+
+def sendmail(usermail, bookname):
+    EMAIL = "andersonrdutra7@gmail.com"
+    PASSWORD = "uzbvhbqytuayxijo"
+
+    msg = MIMEMultipart()
+    msg["subject"] = "Confirmação de Empréstimo"
+    msg["From"] = EMAIL
+    msg["To"] = usermail
+    bodymail = f"""
+    <html>
+        <head></head>
+        <body>
+            <p>Olá, tudo bem?</p>
+            <br>
+            <p>Passando pra avisar que sua solicitação de empréstimo foi autorizada.</p>
+            <p>O livro "<strong>{bookname}</strong>" ja´esta disponível, aproveite e boa leitura!</p>
+            <p>Obrigado por utilizar nossa biblioteca.</p>
+            <br>
+            <img src="https://github.com/AndersonDutra7/Biblioteca-Django/blob/main/media/logo-sem-fundo.png?raw=true">
+        </body>
+    </html>
+    """
+    msg.attach(MIMEText(bodymail, "html"))
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(EMAIL, PASSWORD)
+        smtp.send_message(msg)

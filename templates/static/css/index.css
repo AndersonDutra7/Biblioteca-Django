@@ -6,9 +6,11 @@
      
 body {
     width: auto;
+    height: 100vh;
     overflow: hidden;
     background: linear-gradient(to bottom, rgba(252, 245, 245, 1) 30%, whitesmoke 50%, whitesmoke 50%, salmon 95%);
     background-repeat: no-repeat;
+    margin-bottom: 8%;
 }
 
 .navbar{
@@ -87,7 +89,7 @@ body {
 }
 
 main{
-    height: 100vh;
+    height: auto;
     display: flex;
     align-items: flex-start;
     overflow: auto;
@@ -181,15 +183,53 @@ main{
 }
 
 .description {
-    max-height: 10rem;  /* Defina a altura máxima desejada (3 linhas neste exemplo) */
+    max-height: 10rem;
     overflow: hidden;
 }
 
 .expanded {
-    max-height: none;  /* Permite que o conteúdo expanda completamente */
+    max-height: none;
 }
 
 .toggle-btn {
     cursor: pointer;
     color: blue;
+}
+
+@media screen and (max-width: 1120px) {
+    .title-navbar{
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 985px) {
+    .title-navbar{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 595px) {
+    .navbar{
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 5%;
+    }
+
+    .avatar{
+        margin-top: -10%;
+        margin-right: -80%;
+        position: absolute;
+    }
+}
+
+@media screen and (max-width: 508px) {
+    .navbar .navbar-links{
+        padding-bottom: 2% 0;
+        justify-content: center;
+    }
+
+    .admin-links{
+        display: flex;
+        flex-direction: column;
+    }
 }
