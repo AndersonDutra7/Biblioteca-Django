@@ -23,7 +23,9 @@
                 <h1>Ralph & Teddy - The Library</h1>
             </div>
             <div class="logo-navbar">
-                <img src="../../../media/logo-sem-fundo.png" alt="">
+                <a href="{% url 'home' %}">
+                    <img src="../../../media/logo-sem-fundo.png" alt="Home">
+                </a>
             </div>
         </nav>
     </header>
@@ -54,12 +56,12 @@
             </form>               
             <p class="login-registro">Já possui conta? <a href="{% url 'login' %}">Entrar</a></p>
         </div>
-    <footer class="footer">
-        <img src="../../../media/ralph-rosto.png" alt="Ralph">
-        <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>
-        <p>Created by Anderson Dutra</p>
-        <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <img src="../../../media/teddy-rosto.png" alt="Teddy">
-    </footer>
+        <footer class="footer">
+            <img src="../../../media/ralph-rosto.png" alt="Ralph">
+            <a href="https://github.com/AndersonDutra7" target="_blank"><i class="fab fa-github"></i></a>
+            <p>Created by Anderson Dutra</p>
+            <a href="https://www.linkedin.com/in/anderson-dutra-88b294211/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <img src="../../../media/teddy-rosto.png" alt="Teddy">
+        </footer>
 </body>
 </html>
