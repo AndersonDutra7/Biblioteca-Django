@@ -181,7 +181,7 @@ def reserve_book(request, id):
 
 @login_required
 def lend_book(request, id):
-    book = get_object_or_404(Books, id=id)
+    book = Books.objects.get(id=id)
     reservations = Reservations.objects.filter(book=book)
 
     if request.method == "POST":
