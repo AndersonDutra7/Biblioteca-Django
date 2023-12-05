@@ -101,6 +101,8 @@ main{
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    height: auto;
+    padding: 2%;
 }
 
 .card > a > img{
